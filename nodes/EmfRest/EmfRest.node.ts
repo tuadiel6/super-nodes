@@ -6,13 +6,13 @@ import * as http from 'http';
 export class EmfRest implements INodeType {
   description: INodeTypeDescription = {
   displayName: 'EMF REST',
-  name: 'emfRest',
+  name: 'EmfRest',
   icon: 'file:emfmodel.svg',
   group: ['transform'],
   version:  1,
 	description: 'EMF-REST API to access the model',
 	defaults: {
-		name: 'Emf Rest',
+		name: 'EMF REST',
 	},
   inputs: ['main'],
 	outputs: ['main'],

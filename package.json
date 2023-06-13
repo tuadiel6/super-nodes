@@ -37,9 +37,9 @@
       "dist/nodes/ExampleNode/ExampleNode.node.js",
       "dist/nodes/HttpBin/HttpBin.node.js",
       "dist/nodes/HelloWorld/HelloWorld.node.js",
-      "dist/nodes/EmfModel/EmfModel.node.js",
       "dist/nodes/ReqHttp/ReqHttp.node.js",
-      "dist/nodes/RESTAPI/RestApi.node.js"
+      "dist/nodes/RESTAPI/RestApi.node.js",
+      "dist/nodes/EMFREST/EmfRest.node.js"
 
     ]
   },
