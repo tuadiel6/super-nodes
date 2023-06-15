@@ -76,14 +76,7 @@ async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 			});
 
 			res.on('end', () => {
-        //additional
-        try {
-          const responseJson = JSON.parse(data);
-          resolve([responseJson]); // Wrap the response in an array
-        } catch (error) {
-          reject('Error parsing response JSON: ${error}');
-        }
-				//resolve(JSON.parse(data));
+				resolve(JSON.parse(data));
 			});
 		});
 
