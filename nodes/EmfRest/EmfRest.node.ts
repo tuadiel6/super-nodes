@@ -101,6 +101,6 @@ async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 	});
 
 	// Return the response data as output
-	return this.prepareOutputData(responseData);
+	return this.prepareOutputData([{ json: responseData }]);
 }
 }
