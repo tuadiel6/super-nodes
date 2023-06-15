@@ -69,7 +69,7 @@ async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
  				// Perform the HTTP request
 	const responseData = await new Promise<any>((resolve, reject) => {
 		const req = http.get(url, options, (res) => {
-			let data = '';
+			let data = ' ';
 
 			res.on('data', (chunk) => {
 				data += chunk;
