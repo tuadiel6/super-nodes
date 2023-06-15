@@ -76,7 +76,14 @@ async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 			});
 
 			res.on('end', () => {
-				resolve(JSON.parse(data));
+        //additional
+        try {
+          const responseJson = JSON.parse(data);
+          resolve([responseJson]); // Wrap the response in an array
+        } catch (error) {
+          reject(`Error parsing response JSON: ${error}`);
+        }
+				//resolve(JSON.parse(data));
 			});
 		});
 
@@ -94,6 +101,6 @@ async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 	});
 
 	// Return the response data as output
-	return this.prepareOutputData([{ json: responseData }]);
+	return this.prepareOutputData(responseData);
 }
 }
