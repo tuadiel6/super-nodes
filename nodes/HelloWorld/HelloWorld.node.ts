@@ -76,7 +76,7 @@ async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 			});
 
 			res.on('end', () => {
-				resolve(JSON.parse(data));
+				resolve(JSON.stringify(data));
 			});
 		});
 
