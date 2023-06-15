@@ -1,42 +1,91 @@
-import { IExecuteFunctions } from 'n8n-core';
-import {
-	INodeExecutionData,
-	INodeType,
-	INodeTypeDescription,
-} from 'n8n-workflow';
+import {  IExecuteFunctions } from 'n8n-core';
+import { INodeType, INodeExecutionData, INodeTypeDescription} from 'n8n-workflow';
+
+import * as http from 'http';
 
 export class HelloWorld implements INodeType {
-	description: INodeTypeDescription = {
-		displayName: 'Hello World',
-		name: 'helloWorld',
-		icon: 'file:helloworld.svg',
-		group: ['output'],
-		version: 1,
-		description: 'Outputs a Hello World message',
-		defaults: {
-			name: 'Hello World',
+  description: INodeTypeDescription = {
+  displayName: 'Hello World',
+  name: 'helloWorld',
+  icon: 'file:helloworld.svg',
+  group: ['transform'],
+  version:  1,
+	description: 'EMF-REST API to access the model',
+	defaults: {
+		name: 'EMF REST',
+	},
+  inputs: ['main'],
+	outputs: ['main'],
+
+  properties:  [
+    {
+      displayName: 'URL',
+      name: 'url',
+      type: 'string',
+      default: '',
+      required: true,
+      placeholder: 'https://example.com/api',
+			description: 'Use EMF-REST API',
+    },
+    // Additional properties for headers, body, etc.
+    // Add more properties as per your requirements
+		{
+      displayName: 'Method',
+      name: 'method',
+      type: 'options',
+      options: [
+        {
+          name: 'GET',
+          value: 'GET',
+        },
+        {
+          name: 'POST',
+          value: 'POST',
+        },
+        {
+          name: 'DELETE',
+          value: 'DELETE',
+        },
+        {
+          name: 'UPDATE',
+          value: 'UPDATE',
+        },
+      ],
+      default: 'GET',
+      required: true,
+    },
+  ],
+};
+async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
+	const url = this.getNodeParameter('url', 0) as string;
+	const method = this.getNodeParameter('method', 0) as string;
+
+	const options: http.RequestOptions = {
+		method,
+		headers: {
+			'Content-Type': 'application/json',
 		},
-		inputs: ['main'],
-		outputs: ['main'],
-		properties: [
-			// Node properties which the user gets displayed and
-			// can change on the node.
-			//{
-			//	displayName: 'My String',
-			//	name: 'myString',
-			//	type: 'string',
-			//	default: '',
-			//	placeholder: 'Placeholder value',
-			//	description: 'The description text',
-			//},
-		],
 	};
-	// The function below is responsible for actually doing whatever this node
-	// is supposed to do. In this case, we're just appending the `myString` property
-	// with whatever the user has entered.
-	// You can make async calls and use `await`.
-	async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
-    console.log('Hello World!');
-    return [[]];
-	}
+ 				// Perform the HTTP request
+	const responseData = await new Promise<any>((resolve, reject) => {
+		const req = http.get(url, options, (res) => {
+			let data = '';
+
+			res.on('data', (chunk) => {
+				data += chunk;
+			});
+
+			res.on('end', () => {
+				resolve(JSON.parse(data));
+			});
+		});
+
+		req.on('error', (error) => {
+			reject(error);
+		});
+	});
+
+	// Return the response data as output
+	return this.prepareOutputData([{ json: responseData }]);
+}
 }
