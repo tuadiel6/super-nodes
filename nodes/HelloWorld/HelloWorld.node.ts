@@ -71,8 +71,8 @@ async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 		const req = http.get(url, options, (res) => {
 			let data = ' ';
 
-			res.on('data', (chunk) => {
-				data += chunk;
+			res.on('data', (pluck) => {
+				data += pluck;
 			});
 
 			res.on('end', () => {
@@ -86,6 +86,6 @@ async execute(this: IExecuteFunctions): Promise<INodeExecutionData[][]> {
 	});
 
 	// Return the response data as output
-	return this.prepareOutputData([{ json: responseData }]);
+	return this.prepareOutputData([{ json: responseData}]);
 }
 }
